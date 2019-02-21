@@ -42,6 +42,7 @@ class HttpRequest:
         print "Request lähetetty"
 
 def write_header(f, headers):
+
     print "write_headers"
     for header, value in headers.iteritems():
         f.write("%s: %s\r\n" % (header, value))
