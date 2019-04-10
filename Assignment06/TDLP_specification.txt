@@ -1,0 +1,94 @@
+To-Do List Protocol (TDLP)
+
+TDLP is a to-do list protocol. TDLP requires a reliable transport
+such as TCP. Default TDLP port is 65432. TDLP is not encrypted and it does not
+have any authentication or authorization functionality.
+
+TDLP is a stateful request/response protocol. Requests are made by the client
+and responses are made by the server. Responses can only be sent as a response
+to a request. Responses can never be sent without receiving a request first. 
+Connection can only be closed by client, or in a case of malformed request, 
+the server may also destroy the connection. Server retains client information 
+until connection to the client is closed.
+
+TDLP message structure (for both requests and responses) is as follows:
+
+    METHOD BODYLENGTH METHOD-SPECIFIC-PARAMETERS\r\n
+    [BODY]
+
+The first line of a message consists of a method, body length and method
+specific parameters followed by a CRLF (\r\n). Optional body follows the \r\n
+characters. Whether or not a message contains a body depends on the method.
+
+TDLP has the following methods:
+	
+	LIST
+	LISTRESPONSE
+	ADD
+	DONE
+	SUCCESS
+	ERROR
+
+LIST is used by the client to request todo list tasks. LIST does not have 
+method parameters. Server responds to a valid LIST request with a LISTRESPONSE 
+message. LIST does not have a body.
+
+Example LIST request:
+
+    LIST 0 \r\n
+
+LISTRESPONSE is used by the server to respond to a client's valid LIST request.
+LISTRESPONSE has a single method parameter, number of items in the returned
+list. LISTRESPONSE has a body if the number of returned items is greater than
+0. The body is a list of \r\n separated items. The final item should not have
+the \r\n suffix.
+
+Example LISTRESPONSE response:
+
+    LISTRESPONSE 12 1\r\n
+    0) Buy milk
+
+ADD is used by the client to add a task to the todo list. ADD has a body containing
+the task to be added. ADD has no parameters. Server responds to a valid ADD request
+with a SUCCESS message if adding the task was successful.
+
+Example ADD request:
+
+	ADD 9 \r\n
+    	Buy milk
+
+DONE is used by the client to remove a task from the todo list. DONE has one method parameter,
+which is the index of the task to be removed. DONE does not have a body.
+
+Example DONE request:
+
+	DONE 1 \r\n
+
+SUCCESS is used by the server to notify client of a successful handling of ADD or DONE request.
+SUCCESS does not have parameters or body.
+
+Example SUCCESS response:
+
+	SUCCESS 0 \r\n
+
+ERROR is used by the server to let the client know that a request could not be
+handled. Error has a single method parameter, an error code. ERROR does not
+have a body.
+
+List of error codes and their meaning:
+
+    1: Adding a task was not successful
+    2: Task to be removed was not found
+
+
+
+
+
+
+
+
+
+
+
+
+

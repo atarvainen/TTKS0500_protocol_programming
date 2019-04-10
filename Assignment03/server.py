@@ -30,9 +30,9 @@ def main():
             # accept() returns a client socket and the address from which
             # the client connected
             (client, addr) = sock.accept()
-            print "\n", "Received a connection from", addr
+            print("\n", "Received a connection from", addr)
             # read and print whatever the client sends us
-            print client.recv(1024),
+            print(client.recv(1024))
             # send "hello world!" back to the client
             client.send("hello world!\n")
             time.sleep(.1)

@@ -1,0 +1,9 @@
+A new thread for each client connection is created. Thread destroyed when connection to client is closed.
+
+Threading locks used for preventing simultaneous access to the todo list file. Tested with time.sleep.
+
+Simultaneous access to the file in a best case would result to just some changes not going trough. Worst
+case I'm not sure if the program would crash with the file being open in multiple threads or what.
+
+With locks each thread needs to wait for a turn to access the file, not very efficient, but in this case works.
+

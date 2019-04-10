@@ -3,7 +3,7 @@ import socket
 def send(sock, data):
     try:
         data_len = len(data)
-        send_data(sock, str(data_len)+"\n")
+        send_data(sock, str(data_len) + "\n\r")
         send_data(sock, data)
 
         pass
@@ -32,7 +32,7 @@ try:
 
     # send "hello" to server
 
-    send(s, "hello world")
+    send(s, "FILE hello world")
 
     # print whatever server sends back.
     print s.recv(1024),
